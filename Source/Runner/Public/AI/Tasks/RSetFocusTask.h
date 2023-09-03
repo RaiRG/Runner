@@ -12,14 +12,18 @@
 UCLASS()
 class RUNNER_API URSetFocusTask : public UBTTaskNode
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	URSetFocusTask();
-	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-	
-protected:    
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
-	FBlackboardKeySelector TargetActor;
-	
+    URSetFocusTask();
+    virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
+    bool bEnableFocus = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI", meta=(EditCondition="bEnableFocus"))
+    FBlackboardKeySelector TargetActor;
+
+
 };

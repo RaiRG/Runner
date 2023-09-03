@@ -4,20 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTDecorator.h"
-#include "ROwnPickableItemDecorator.generated.h"
+#include "RPlayerCharacterStateDecorator.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RUNNER_API UROwnPickableItemDecorator : public UBTDecorator
+class RUNNER_API URPlayerCharacterStateDecorator : public UBTDecorator
 {
     GENERATED_BODY()
-    UROwnPickableItemDecorator();
+
+    URPlayerCharacterStateDecorator();
 
 protected:
     virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    FBlackboardKeySelector PickableItemKey;
+    FBlackboardKeySelector PlayerCharacterKey;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    bool bCanPlayerCharacterMove = true;
+
 };

@@ -5,28 +5,34 @@
 
 #include "AIController.h"
 #include "RAICharacter.h"
-#include "RAITeam.h"
+#include "RTeam.h"
 
 URSomeoneMovingToCircleDecorator::URSomeoneMovingToCircleDecorator()
 {
-	NodeName = "Is Anyone Moving To Circle";
+    NodeName = "Is Anyone Moving To Circle";
 }
 
 bool URSomeoneMovingToCircleDecorator::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp,
-                                                                  uint8* NodeMemory) const
+    uint8* NodeMemory) const
 {
-	const auto Controller = OwnerComp.GetAIOwner();
-	const auto Blackboard = OwnerComp.GetBlackboardComponent();
-	if (!Controller || !Blackboard) return false;
+    const auto Controller = OwnerComp.GetAIOwner();
+    const auto Blackboard = OwnerComp.GetBlackboardComponent();
+    if (!Controller || !Blackboard)
+    {
+        return false;
+    }
 
+    auto Pawn = Cast<ARAICharacter>(Controller->GetPawn());
+    if (!Pawn)
+    {
+        return false;
+    }
 
-	const auto Pawn = Cast<ARAICharacter>(Controller->GetPawn());
-	if (!Pawn) return false;
+    auto Team = Pawn->GetTeam();
+    if (!Team)
+    {
+        return false;
+    }
 
-	const auto Team = Pawn->GetTeam();
-	if (!Team) return false;
-
-
-	UE_LOG(LogTemp, Display, TEXT("SomeoneMovingToCircleDecorator %s"), !Team->DoesEveryoneInCircle() ? *FString("True") : *FString("False"));
-	return !Team->DoesEveryoneInCircle();
+    return !Team->IsEveryoneInCircle();
 }

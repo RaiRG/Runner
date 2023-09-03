@@ -4,19 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTDecorator.h"
-#include "RSomeoneMovingToCircleDecorator.generated.h"
+#include "RPawnStandsInCircleDecorator.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RUNNER_API URSomeoneMovingToCircleDecorator : public UBTDecorator
+class RUNNER_API URPawnStandsInCircleDecorator : public UBTDecorator
 {
     GENERATED_BODY()
-
-    URSomeoneMovingToCircleDecorator();
+    URPawnStandsInCircleDecorator();
 
 protected:
     virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    bool bStandsInCircle = true;
 };

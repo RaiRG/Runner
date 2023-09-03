@@ -3,13 +3,17 @@
 #pragma once
 #include "RCoreTypes.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerCharacterChangeMovementStateSignature, bool, bCanMove);
-
 
 UENUM(BlueprintType)
 enum class ERPickableItemState : uint8
 {
-	OnTheFloor,
-	OwnedByPlayer,
-	OwnedByBot
+    OwnedByPlayer,
+    OwnedByBot,
+    InsideCircle,
+    OutsideCircle
 };
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerCharacterChangeMovementStateSignature, bool, bCanMove);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPickableUpActorChangeStateSignature, ERPickableItemState, NewState);

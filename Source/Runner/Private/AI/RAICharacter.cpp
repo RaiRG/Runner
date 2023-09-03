@@ -12,38 +12,37 @@
 #include "Kismet/GameplayStatics.h"
 
 
-
 ARAICharacter::ARAICharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = false;
 
-	AIControllerClass = ARAIController::StaticClass();
-	bUseControllerRotationYaw = true;
-	if (GetCharacterMovement())
-	{
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 100.0f, 0.0f);
-		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	}
+    AIControllerClass = ARAIController::StaticClass();
+    bUseControllerRotationYaw = true;
+    if (GetCharacterMovement())
+    {
+        GetCharacterMovement()->RotationRate = FRotator(0.0f, 100.0f, 0.0f);
+        GetCharacterMovement()->bUseControllerDesiredRotation = true;
+    }
 }
 
 void ARAICharacter::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	// Сохраняем указатель на поднимаемую сферу
-	const auto PickableItem = Cast<ARPickableItem>(
-		UGameplayStatics::GetActorOfClass(GetWorld(), ARPickableItem::StaticClass()));
+    // Сохраняем указатель на поднимаемую сферу
+    const auto PickableItem = Cast<ARPickableItem>(
+        UGameplayStatics::GetActorOfClass(GetWorld(), ARPickableItem::StaticClass()));
 
-	// Сохраняем указатель на персонажа пользователя
-	const auto PlayerPawn = Cast<ARPlayerCharacter>(
-		UGameplayStatics::GetActorOfClass(GetWorld(), ARPlayerCharacter::StaticClass()));
+    // Сохраняем указатель на персонажа пользователя
+    const auto PlayerPawn = Cast<ARPlayerCharacter>(
+        UGameplayStatics::GetActorOfClass(GetWorld(), ARPlayerCharacter::StaticClass()));
 
-	if (auto AIController = Cast<AAIController>(GetController()))
-	{
-		if (auto Blackboard = AIController->GetBlackboardComponent())
-		{
-			Blackboard->SetValueAsObject(PickableItemKeyName, PickableItem);
-			Blackboard->SetValueAsObject(PlayerCharacterKeyName, PlayerPawn);
-		}
-	}
+    if (auto AIController = Cast<AAIController>(GetController()))
+    {
+        if (auto Blackboard = AIController->GetBlackboardComponent())
+        {
+            Blackboard->SetValueAsObject(PickableItemKeyName, PickableItem);
+            Blackboard->SetValueAsObject(PlayerCharacterKeyName, PlayerPawn);
+        }
+    }
 }

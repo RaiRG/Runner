@@ -11,21 +11,19 @@ class IRPickableUp;
 UCLASS()
 class RUNNER_API ARBaseCharacter : public ACharacter
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	ARBaseCharacter();
-	
+    ARBaseCharacter();
 
-	bool HoldObject(AActor* ActorForHolding);
-	void DropHoldedActor();
-	bool DoesHoldObject() const {return bHoldSomething; }
-	TScriptInterface<IRPickableUp> GetHoldedObject() const{ return HoldedObject; }
+    bool HoldObject(AActor* ActorForHolding);
+    void DropHoldedActor();
+    bool DoesHoldObject() const { return bHoldSomething; }
+    TScriptInterface<IRPickableUp> GetHoldedObject() const { return HoldedObject; }
+
 protected:
+    bool bHoldSomething;
 
-	void TryToPickUpOverlappedActor();	
-	bool bHoldSomething;
-	
-	UPROPERTY()
-	TScriptInterface<IRPickableUp> HoldedObject;
+    UPROPERTY()
+    TScriptInterface<IRPickableUp> HoldedObject;
 };

@@ -8,25 +8,31 @@
 
 URSetFocusTask::URSetFocusTask()
 {
-	NodeName = "Set Focus";
+    NodeName = "Set Focus";
 }
 
 EBTNodeResult::Type URSetFocusTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	const auto Controller = OwnerComp.GetAIOwner();
-	const auto Blackboard = OwnerComp.GetBlackboardComponent();
+    const auto Controller = OwnerComp.GetAIOwner();
+    const auto Blackboard = OwnerComp.GetBlackboardComponent();
 
-	if (!Controller || !Blackboard) { return EBTNodeResult::Failed; }
+    if (!Controller || !Blackboard) { return EBTNodeResult::Failed; }
 
-	const auto FocusActor = Cast<AActor>(Blackboard->GetValueAsObject(TargetActor.SelectedKeyName));
+    const auto FocusActor = Cast<AActor>(Blackboard->GetValueAsObject(TargetActor.SelectedKeyName));
 
-	if (!FocusActor)
-	{
-		return EBTNodeResult::Failed;
-	}
+    if (!FocusActor)
+    {
+        return EBTNodeResult::Failed;
+    }
 
-	OwnerComp.GetAIOwner()->SetFocus(FocusActor);
-	Controller->SetFocus(FocusActor);
+    if (bEnableFocus)
+    {
+        Controller->SetFocus(FocusActor);
+    }
+    else
+    {
+        Controller->ClearFocus(EAIFocusPriority::Gameplay);
+    }
 
-	return EBTNodeResult::Succeeded;
+    return EBTNodeResult::Succeeded;
 }

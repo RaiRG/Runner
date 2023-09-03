@@ -8,8 +8,8 @@
 #include "Kismet/GameplayStatics.h"
 
 void URPlayerCharacterEnvQueryContext::ProvideContext(FEnvQueryInstance& QueryInstance,
-                                                      FEnvQueryContextData& ContextData) const
+    FEnvQueryContextData& ContextData) const
 {
-	const auto PlayerCharacter = UGameplayStatics::GetActorOfClass(GetWorld(), ARPlayerCharacter::StaticClass());
-	UEnvQueryItemType_Actor::SetContextHelper(ContextData, PlayerCharacter);
+    const auto PlayerCharacter = UGameplayStatics::GetActorOfClass(GetWorld(), ARPlayerCharacter::StaticClass());
+    UEnvQueryItemType_Actor::SetContextHelper(ContextData, PlayerCharacter);
 }

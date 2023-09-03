@@ -8,35 +8,36 @@
 
 
 class UBehaviorTree;
-class ARAITeam;
+class ARTeam;
 UCLASS()
 class RUNNER_API ARAICharacter : public ARBaseCharacter
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	ARAICharacter();
+    ARAICharacter();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
-	UBehaviorTree* BehaviorTreeAsset;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
+    UBehaviorTree* BehaviorTreeAsset;
 
-	void SetTeam(ARAITeam* NewTeam) { Team = NewTeam; }
-	ARAITeam* GetTeam() const { return Team; }
+    void SetTeam(ARTeam* NewTeam) { Team = NewTeam; }
+    ARTeam* GetTeam() const { return Team; }
+    
+    bool GetStandsInCircle() const { return bStandsInCircle; }
+    void SetStandsInCircle(bool Val) { bStandsInCircle = Val; }
 
-	bool GetStandsInCircle() const {return bStandsInCircle;}
-	void SetStandsInCircle(bool Val) {bStandsInCircle = Val; }
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
-	FName PickableItemKeyName = "PickableSphere";
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
+    FName PickableItemKeyName = "PickableSphere";
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
-	FName PlayerCharacterKeyName = "PlayerCharacter";
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
+    FName PlayerCharacterKeyName = "PlayerCharacter";
 
 private:
-	UPROPERTY()
-	ARAITeam* Team;
+    bool bStandsInCircle = false;
 
-	bool bStandsInCircle = false;
+    UPROPERTY()
+    ARTeam* Team;
 };

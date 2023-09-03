@@ -3,15 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIController.h"
+#include "DetourCrowdAIController.h"
 #include "RAIController.generated.h"
 
+class UCrowdFollowingComponent;
 /**
  * 
  */
 UCLASS()
 class RUNNER_API ARAIController : public AAIController
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
 };

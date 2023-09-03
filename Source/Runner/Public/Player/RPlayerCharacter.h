@@ -12,24 +12,30 @@ class IRPickableUp;
 UCLASS()
 class RUNNER_API ARPlayerCharacter : public ARBaseCharacter
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	ARPlayerCharacter();
+    ARPlayerCharacter();
 
-	void BlockMovement();
-	void UnblockMovement();
-	bool GetCanMove() const { return bCanMove; }
-	FOnPlayerCharacterChangeMovementStateSignature PlayerCharacterChangeMovementState;  
+    void BlockMovement();
+    void UnblockMovement();
+
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    bool GetCanMove() const { return bCanMove; }
+
+    FOnPlayerCharacterChangeMovementStateSignature PlayerCharacterChangeMovementState;
+
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	UCameraComponent* CameraComponent;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UCameraComponent* CameraComponent;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	void MoveForward(float Amount);
-	void MoveRight(float Amount);
-	void ChangeMovementState(bool NewState);
-	bool bCanMove = true;
+    void MoveForward(float Amount);
+    void MoveRight(float Amount);
+    void ChangeMovementState(bool NewStateCanMove);
+    bool bCanMove = true;
+
+    void TryToPickUpOverlappedActor();
 };

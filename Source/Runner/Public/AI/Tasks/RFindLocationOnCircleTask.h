@@ -12,12 +12,13 @@
 UCLASS()
 class RUNNER_API URFindLocationOnCircleTask : public UBTTaskNode
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	URFindLocationOnCircleTask();
+    URFindLocationOnCircleTask();
+
 protected:
-	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+    virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	FBlackboardKeySelector CircleLocationKey;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    FBlackboardKeySelector CircleLocationKey;
 };

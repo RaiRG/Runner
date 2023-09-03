@@ -12,7 +12,7 @@
 UCLASS()
 class RUNNER_API URPlayerCharacterEnvQueryContext : public UEnvQueryContext
 {
-	GENERATED_BODY()
-	
-	virtual void ProvideContext(FEnvQueryInstance& QueryInstance, FEnvQueryContextData& ContextData) const override;
+    GENERATED_BODY()
+
+    virtual void ProvideContext(FEnvQueryInstance& QueryInstance, FEnvQueryContextData& ContextData) const override;
 };

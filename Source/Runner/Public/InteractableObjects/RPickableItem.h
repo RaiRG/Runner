@@ -10,34 +10,46 @@
 
 class USphereComponent;
 class UStaticMeshComponent;
+class ARTeam;
 
 UCLASS()
 class RUNNER_API ARPickableItem : public AActor, public IRPickableUp
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	ARPickableItem();
+    ARPickableItem();
 
-	virtual bool GetIsPickedUp() const override { return bIsPickedUp; }
-	virtual bool PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAttaching = nullptr) override;
-	virtual void Drop() override;
-	ERPickableItemState GetCurrentState() const { return CurrentState; }
+    virtual bool GetIsPickedUp() const override { return bIsPickedUp; }
+    virtual bool PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAttaching = nullptr) override;
+    virtual void Drop() override;
+    virtual AActor* GetGrabbingActor() const override { return GrabbingActor; };
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    ERPickableItemState GetCurrentState() const { return CurrentState; }
+
+    FOnPickableUpActorChangeStateSignature PickableUpActorChangeState;
 
 protected:
-	virtual void BeginPlay() override;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UStaticMeshComponent* StaticMeshComponent;
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaSeconds) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
-	USphereComponent* InteractionZoneCollision;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+    UStaticMeshComponent* StaticMeshComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="PickableUp")
-	FName SocketForAttaching = "PickupSocket";
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+    USphereComponent* InteractionZoneCollision;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="PickableUp")
+    FName SocketForAttaching = "PickupSocket";
 
 private:
-	bool bIsPickedUp;
+    bool bIsPickedUp;
+    UPROPERTY()
+    AActor* GrabbingActor;
+    ERPickableItemState CurrentState;
+    void SetStateAccordingToCircle();
+    void ChangeCurrentState(ERPickableItemState NewState);
 
-	ERPickableItemState CurrentState = ERPickableItemState::OnTheFloor;
-	void ChangeCurrentState(ERPickableItemState NewState);
+    UPROPERTY()
+    ARTeam* BotsTeam;
 };

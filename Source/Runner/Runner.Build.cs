@@ -7,21 +7,21 @@ public class Runner : ModuleRules
 	public Runner(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[]
+
+		PublicDependencyModuleNames.AddRange(new[]
 		{
-			"Core", 
+			"Core",
 			"CoreUObject",
-			"Engine", 
+			"Engine",
 			"InputCore",
 			"GameplayTasks",
-			"NavigationSystem", 
+			"NavigationSystem",
 			"AIModule"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 
-		PublicIncludePaths.AddRange(new string[]
+		PublicIncludePaths.AddRange(new[]
 		{
 			"Runner/Public/Player",
 			"Runner/Public/InteractableObjects",
@@ -29,12 +29,13 @@ public class Runner : ModuleRules
 			"Runner/Public/AI",
 			"Runner/Public/AI/Decorators",
 			"Runner/Public/AI/Tasks",
-			"Runner/Public/AI/EQS"
+			"Runner/Public/AI/EQS",
+			"Runner/Public/AI/Services"
 		});
-		
+
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 

@@ -4,25 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "RChangePlayerCharacterMovement.generated.h"
+#include "RReportStateRegardingCircleTask.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RUNNER_API URChangePlayerCharacterMovement : public UBTTaskNode
+class RUNNER_API URReportStateRegardingCircleTask : public UBTTaskNode
 {
     GENERATED_BODY()
 
-    URChangePlayerCharacterMovement();
+    URReportStateRegardingCircleTask();
 
 protected:
     virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    FBlackboardKeySelector PlayerCharacterKey;
+    FBlackboardKeySelector CircleLocationKey;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    bool bEnableMovement = false;
-
+    bool bInCircle = true;
 };

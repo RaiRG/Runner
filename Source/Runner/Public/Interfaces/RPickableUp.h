@@ -10,7 +10,7 @@
 UINTERFACE()
 class URPickableUp : public UInterface
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };
 
 /**
@@ -18,10 +18,11 @@ class URPickableUp : public UInterface
  */
 class RUNNER_API IRPickableUp
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	virtual bool GetIsPickedUp() const =0;
-	virtual bool PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAttaching = nullptr) = 0;
-	virtual void Drop() = 0;
+    virtual bool GetIsPickedUp() const =0;
+    virtual bool PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAttaching = nullptr) = 0;
+    virtual void Drop() = 0;
+    virtual AActor* GetGrabbingActor() const = 0;
 };
