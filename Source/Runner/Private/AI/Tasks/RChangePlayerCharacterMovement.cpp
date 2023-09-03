@@ -29,12 +29,12 @@ EBTNodeResult::Type URChangePlayerCharacterMovement::ExecuteTask(UBehaviorTreeCo
         return EBTNodeResult::Failed;
     }
 
-    if (bEnableMovement)
+    if (MovementState==ERPlayerCharacterState::MovementUnblocked)
     {
         UE_LOG(LogRChangePlayerCharacterMovement, Display, TEXT("UnBlockMovement of character!"));
         PlayerCharacter->UnblockMovement();
     }
-    else
+    else if (MovementState==ERPlayerCharacterState::MovementBlocked)
     {
         UE_LOG(LogRChangePlayerCharacterMovement, Display, TEXT("BlockMovement of character!"));
         PlayerCharacter->BlockMovement();

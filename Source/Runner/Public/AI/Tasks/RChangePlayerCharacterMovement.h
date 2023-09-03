@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RCoreTypes.h"
 #include "BehaviorTree/BTTaskNode.h"
 #include "RChangePlayerCharacterMovement.generated.h"
 
@@ -23,6 +24,6 @@ protected:
     FBlackboardKeySelector PlayerCharacterKey;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    bool bEnableMovement = false;
+    ERPlayerCharacterState MovementState;
 
 };

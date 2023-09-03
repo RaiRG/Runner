@@ -22,10 +22,10 @@ class RUNNER_API ARTeam : public AActor
 
 public:
     void AddAIMember(ARAICharacter* NewMember);
+    
     bool TakeLocationOnCircle(FVector& Result, ARAICharacter* Char);
     bool IsEveryoneInCircle() const;
-    bool IsPointInsideCircle(FVector Position);
-
+    bool IsPointInsideCircle(FVector Point) const;
 protected:
     virtual void BeginPlay() override;
 
@@ -59,7 +59,7 @@ private:
     void DistibuteAllPointsBetweenAI();
 
     UFUNCTION()
-    void OnPlayerCharacterChangeMovementState(bool bCanMove);
+    void OnPlayerCharacterChangeMovementState(ERPlayerCharacterState MovementState);
 
     UFUNCTION()
     void OnPickableUpActorStateWasChanged(ERPickableItemState NewState);

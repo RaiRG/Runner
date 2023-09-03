@@ -30,5 +30,5 @@ bool URPlayerCharacterStateDecorator::CalculateRawConditionValue(UBehaviorTreeCo
         return false;
     }
 
-    return PlayerCharacter->GetCanMove() == bCanPlayerCharacterMove;
+    return PlayerCharacter->GetMovementState() == RequiredCharacterMovementState;
 }

@@ -13,7 +13,14 @@ enum class ERPickableItemState : uint8
     OutsideCircle
 };
 
+UENUM(BlueprintType)
+enum class ERPlayerCharacterState : uint8
+{
+    MovementBlocked,
+    MovementUnblocked
+};
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerCharacterChangeMovementStateSignature, bool, bCanMove);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerCharacterChangeMovementStateSignature, ERPlayerCharacterState, NewState);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPickableUpActorChangeStateSignature, ERPickableItemState, NewState);

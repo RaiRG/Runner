@@ -20,12 +20,12 @@ ARPlayerCharacter::ARPlayerCharacter()
 
 void ARPlayerCharacter::BlockMovement()
 {
-    ChangeMovementState(false);
+    ChangeMovementState(ERPlayerCharacterState::MovementBlocked);
 }
 
 void ARPlayerCharacter::UnblockMovement()
 {
-    ChangeMovementState(true);
+    ChangeMovementState(ERPlayerCharacterState::MovementUnblocked);
 }
 
 
@@ -68,7 +68,7 @@ void ARPlayerCharacter::TryToPickUpOverlappedActor()
 
 void ARPlayerCharacter::MoveForward(float Amount)
 {
-    if (!bCanMove)
+    if (MovementState==ERPlayerCharacterState::MovementBlocked)
     {
         return;
     }
@@ -81,7 +81,7 @@ void ARPlayerCharacter::MoveForward(float Amount)
 
 void ARPlayerCharacter::MoveRight(float Amount)
 {
-    if (!bCanMove)
+    if (MovementState==ERPlayerCharacterState::MovementBlocked)
     {
         return;
     }
@@ -92,13 +92,13 @@ void ARPlayerCharacter::MoveRight(float Amount)
     AddMovementInput(GetActorRightVector(), Amount);
 }
 
-void ARPlayerCharacter::ChangeMovementState(bool NewStateCanMove)
+void ARPlayerCharacter::ChangeMovementState(ERPlayerCharacterState NewState)
 {
-    if (bCanMove == NewStateCanMove)
+    if (MovementState == NewState)
     {
         return;
     }
-    bCanMove = NewStateCanMove;
-    PlayerCharacterChangeMovementState.Broadcast(bCanMove);
-    UE_LOG(LogRPlayerCharacter, Display, TEXT("ChangeMovementState to %i"), bCanMove);
+    MovementState = NewState;
+    PlayerCharacterChangeMovementState.Broadcast(MovementState);
+    UE_LOG(LogRPlayerCharacter, Display, TEXT("ChangeMovementState to %s"), *UEnum::GetValueAsString(MovementState));
 }

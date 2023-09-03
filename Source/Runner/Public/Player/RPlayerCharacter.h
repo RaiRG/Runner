@@ -19,10 +19,7 @@ public:
 
     void BlockMovement();
     void UnblockMovement();
-
-    UFUNCTION(BlueprintCallable, BlueprintPure)
-    bool GetCanMove() const { return bCanMove; }
-
+    ERPlayerCharacterState GetMovementState() const { return MovementState; }
     FOnPlayerCharacterChangeMovementStateSignature PlayerCharacterChangeMovementState;
 
 protected:
@@ -34,8 +31,10 @@ protected:
 private:
     void MoveForward(float Amount);
     void MoveRight(float Amount);
-    void ChangeMovementState(bool NewStateCanMove);
-    bool bCanMove = true;
+    void ChangeMovementState(ERPlayerCharacterState NewStateCanMove);
 
     void TryToPickUpOverlappedActor();
+
+    ERPlayerCharacterState MovementState = ERPlayerCharacterState::MovementUnblocked;
+
 };

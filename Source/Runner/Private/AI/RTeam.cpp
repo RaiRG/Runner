@@ -12,10 +12,9 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogRAITeam, All, All);
 
-
 void ARTeam::AddAIMember(ARAICharacter* NewMember)
 {
-    if (!NewMember->GetTeam())
+    if (!NewMember->GetTeam() && NewMember)
     {
         AllMembers.AddUnique(NewMember);
         NewMember->SetTeam(this);
@@ -38,7 +37,6 @@ bool ARTeam::TakeLocationOnCircle(FVector& Result, ARAICharacter* Char)
     CriticalSection.Lock();
     Result = AllFreePointsOnCircle.Pop();
     CharactersHasAlreadyTakenPlaceOnCircle.Add(Char, Result);
-    UE_LOG(LogRAITeam, Display, TEXT("Result of GetLocationOnShape = %s for %s"), *Result.ToString(), *Char->GetName());
     CriticalSection.Unlock();
     return true;
 }
@@ -46,6 +44,10 @@ bool ARTeam::TakeLocationOnCircle(FVector& Result, ARAICharacter* Char)
 
 bool ARTeam::IsEveryoneInCircle() const
 {
+    if (!bCircleExist)
+    {
+        return false;
+    }
     int32 NumberOfCharactersInCircle = 0;
     for (const auto Member : AllMembers)
     {
@@ -57,19 +59,19 @@ bool ARTeam::IsEveryoneInCircle() const
     return NumberOfCharactersInCircle == TotalNumberOfPointsOnCircle;
 }
 
-bool ARTeam::IsPointInsideCircle(FVector Position)
+bool ARTeam::IsPointInsideCircle(FVector Point) const
 {
     if (bCircleExist)
     {
         UE_LOG(LogRAITeam, Display, TEXT("CurrentCenterOfCircle %s, Position %s, Distance %f, CircleRadius %f"),
-            *CurrentCenterOfCircle.ToString(), *Position.ToString(),
-            FVector::Distance(CurrentCenterOfCircle, Position), CircleRadius);
+            *CurrentCenterOfCircle.ToString(), *Point.ToString(),
+            FVector::Distance(CurrentCenterOfCircle, Point), CircleRadius);
     }
     else
     {
         UE_LOG(LogRAITeam, Display, TEXT("Circle doesn't exist"));
     }
-    return bCircleExist && FVector::Distance(CurrentCenterOfCircle, Position) <= CircleRadius;
+    return bCircleExist && FVector::Distance(CurrentCenterOfCircle, Point) <= CircleRadius;
 }
 
 void ARTeam::BeginPlay()
@@ -102,9 +104,9 @@ void ARTeam::BeginPlay()
     }
 }
 
-void ARTeam::OnPlayerCharacterChangeMovementState(bool bCanMove)
+void ARTeam::OnPlayerCharacterChangeMovementState(ERPlayerCharacterState MovementState)
 {
-    if (!bCanMove)
+    if (MovementState == ERPlayerCharacterState::MovementBlocked)
     {
         if (AllMembers.Num() > 0)
         {
@@ -120,8 +122,7 @@ void ARTeam::OnFindAllPossiblePoints(TSharedPtr<FEnvQueryResult> Result)
     Result->GetAllAsLocations(AllFreePointsOnCircle);
     TotalNumberOfPointsOnCircle = AllFreePointsOnCircle.Num();
     DistibuteAllPointsBetweenAI();
-    UE_LOG(LogRAITeam, Display, TEXT("AllPossiblePointsForStandingMembers Number = %i"),
-        AllFreePointsOnCircle.Num());
+    UE_LOG(LogRAITeam, Display, TEXT("TotalNumberOfPointsOnCircle = %i"),TotalNumberOfPointsOnCircle );
     CriticalSection.Unlock();
 }
 

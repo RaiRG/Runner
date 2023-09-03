@@ -43,6 +43,7 @@ void ARAICharacter::BeginPlay()
         {
             Blackboard->SetValueAsObject(PickableItemKeyName, PickableItem);
             Blackboard->SetValueAsObject(PlayerCharacterKeyName, PlayerPawn);
+            Blackboard->SetValueAsVector(PatrolPositionKeyName, GetActorLocation());
         }
     }
 }

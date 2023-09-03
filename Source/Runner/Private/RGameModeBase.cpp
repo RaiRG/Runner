@@ -3,3 +3,7 @@
 
 #include "RGameModeBase.h"
 
+void ARGameModeBase::BeginPlay()
+{
+    Super::BeginPlay();
+}

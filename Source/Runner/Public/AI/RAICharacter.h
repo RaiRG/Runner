@@ -19,12 +19,13 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
     UBehaviorTree* BehaviorTreeAsset;
-
+    
     void SetTeam(ARTeam* NewTeam) { Team = NewTeam; }
     ARTeam* GetTeam() const { return Team; }
-    
+
     bool GetStandsInCircle() const { return bStandsInCircle; }
     void SetStandsInCircle(bool Val) { bStandsInCircle = Val; }
+
 
 protected:
     virtual void BeginPlay() override;
@@ -34,6 +35,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
     FName PlayerCharacterKeyName = "PlayerCharacter";
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="AI")
+    FName PatrolPositionKeyName = "PatrolPosition";
 
 private:
     bool bStandsInCircle = false;

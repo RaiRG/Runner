@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RCoreTypes.h"
 #include "BehaviorTree/BTDecorator.h"
 #include "RPlayerCharacterStateDecorator.generated.h"
 
@@ -23,6 +24,6 @@ protected:
     FBlackboardKeySelector PlayerCharacterKey;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-    bool bCanPlayerCharacterMove = true;
+    ERPlayerCharacterState RequiredCharacterMovementState;
 
 };
