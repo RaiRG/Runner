@@ -25,5 +25,5 @@ protected:
     bool bTake = true;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(EditCondition="!bTake"))
-    FVector DropImpulse = FVector(10000.0f, 0.0f, 0.0f);;
+    float DropImpulseStrength = 200.0f;
 };
