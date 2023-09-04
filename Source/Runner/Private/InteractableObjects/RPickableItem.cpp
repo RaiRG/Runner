@@ -47,11 +47,7 @@ bool ARPickableItem::PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAtt
 
     bIsPickedUp = true;
     GrabbingActor = ActorForGrabbing;
-    if (Cast<ARPlayerCharacter>(ActorForGrabbing))
-    {
-        ChangeCurrentState(ERPickableItemState::OwnedByPlayer);
-    }
-    else if (Cast<ARAICharacter>(ActorForGrabbing))
+    if (Cast<ARAICharacter>(ActorForGrabbing))
     {
         ChangeCurrentState(ERPickableItemState::OwnedByBot);
     }
@@ -84,7 +80,7 @@ void ARPickableItem::BeginPlay()
 void ARPickableItem::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    if (CurrentState == ERPickableItemState::InsideCircle || CurrentState == ERPickableItemState::OutsideCircle)
+    if (CurrentState != ERPickableItemState::OwnedByBot)
     {
         if (BotsTeam)
         {

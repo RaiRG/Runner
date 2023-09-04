@@ -13,13 +13,4 @@ UCLASS()
 class RUNNER_API ARGameModeBase : public AGameModeBase
 {
     GENERATED_BODY()
-
-protected:
-    // UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    // int32 NumberOfBots = 10;
-    //
-    // UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    // TSubclassOf<ARTeam> BotsTeamClass = ARTeam::StaticClass();
-
-    virtual void BeginPlay() override;
 };

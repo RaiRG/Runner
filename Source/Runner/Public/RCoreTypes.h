@@ -7,7 +7,6 @@
 UENUM(BlueprintType)
 enum class ERPickableItemState : uint8
 {
-    OwnedByPlayer,
     OwnedByBot,
     InsideCircle,
     OutsideCircle
