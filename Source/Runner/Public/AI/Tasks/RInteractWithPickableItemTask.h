@@ -23,4 +23,7 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(ToolTip="True if eed take, false if need drop"))
     bool bTake = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(EditCondition="!bTake"))
+    FVector DropImpulse = FVector(10000.0f, 0.0f, 0.0f);;
 };

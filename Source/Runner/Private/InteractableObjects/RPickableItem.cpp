@@ -58,11 +58,13 @@ bool ARPickableItem::PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAtt
     return true;
 }
 
-void ARPickableItem::Drop()
+void ARPickableItem::Drop(FVector Impulse)
 {
     const FDetachmentTransformRules Rules(EDetachmentRule::KeepWorld, false);
     DetachFromActor(Rules);
     StaticMeshComponent->SetSimulatePhysics(true);
+    FVector ImpulseInLocalSpace = StaticMeshComponent->GetComponentTransform().InverseTransformVector(Impulse);
+    StaticMeshComponent->AddImpulse(ImpulseInLocalSpace, NAME_None, true);
     bIsPickedUp = false;
     GrabbingActor = nullptr;
     SetStateAccordingToCircle();

@@ -12,14 +12,14 @@ ARBaseCharacter::ARBaseCharacter()
     PrimaryActorTick.bCanEverTick = false;
 }
 
-void ARBaseCharacter::DropHoldedActor()
+void ARBaseCharacter::DropHoldedActor(FVector Impulse)
 {
     if (!bHoldSomething)
     {
         return;
     }
     MoveIgnoreActorRemove(Cast<AActor>(HoldedObject.GetObject()));
-    HoldedObject->Drop();
+    HoldedObject->Drop(Impulse);
     HoldedObject = nullptr;
     bHoldSomething = false;
 }

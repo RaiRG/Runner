@@ -16,9 +16,10 @@ class RUNNER_API ARBaseCharacter : public ACharacter
 public:
     ARBaseCharacter();
 
-    bool HoldObject(AActor* ActorForHolding);
-    void DropHoldedActor();
-    bool DoesHoldObject() const { return bHoldSomething; }
+    virtual bool HoldObject(AActor* ActorForHolding);
+    virtual void DropHoldedActor(FVector Impulse = FVector());
+
+    virtual bool DoesHoldObject() const { return bHoldSomething; }
     TScriptInterface<IRPickableUp> GetHoldedObject() const { return HoldedObject; }
 
 protected:

@@ -41,7 +41,9 @@ void ARPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAxis("TurnAround", this, &ARPlayerCharacter::AddControllerYawInput);
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARPlayerCharacter::Jump);
     PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &ARPlayerCharacter::TryToPickUpOverlappedActor);
-    PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &ARPlayerCharacter::DropHoldedActor);
+
+    DECLARE_DELEGATE_OneParam(FDropHoldedActorSignature, FVector Vector);
+    PlayerInputComponent->BindAction<FDropHoldedActorSignature>("Drop", IE_Pressed, this, &ARPlayerCharacter::DropHoldedActor, FVector());
 }
 
 void ARPlayerCharacter::TryToPickUpOverlappedActor()

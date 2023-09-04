@@ -47,7 +47,7 @@ EBTNodeResult::Type URInteractWithPickableItemTask::ExecuteTask(UBehaviorTreeCom
     else
     {
         UE_LOG(LogRInteractWithPickableItemTask, Display, TEXT("Drop!"))
-        Pawn->DropHoldedActor();
+        Pawn->DropHoldedActor(DropImpulse);
     }
     return SuccessfulInteraction ? EBTNodeResult::Succeeded : EBTNodeResult::Failed;
 }

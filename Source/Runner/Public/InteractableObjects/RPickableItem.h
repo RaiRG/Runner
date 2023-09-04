@@ -22,7 +22,7 @@ public:
 
     virtual bool GetIsPickedUp() const override { return bIsPickedUp; }
     virtual bool PickUp(AActor* ActorForGrabbing, UMeshComponent* MeshForAttaching = nullptr) override;
-    virtual void Drop() override;
+    virtual void Drop(FVector Impulse = FVector()) override;
     virtual AActor* GetGrabbingActor() const override { return GrabbingActor; };
     UFUNCTION(BlueprintCallable, BlueprintPure)
     ERPickableItemState GetCurrentState() const { return CurrentState; }

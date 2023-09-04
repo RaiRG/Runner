@@ -27,6 +27,7 @@ public:
     void SetStandsInCircle(bool Val) { bStandsInCircle = Val; }
 
 
+
 protected:
     virtual void BeginPlay() override;
 
