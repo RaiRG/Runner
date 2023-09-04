@@ -23,7 +23,7 @@ class RUNNER_API ARTeam : public AActor
 public:
     void AddAIMember(ARAICharacter* NewMember);
     
-    bool TakeLocationOnCircle(FVector& Result, ARAICharacter* Char);
+    bool GetLocationOnCircle(FVector& Result, ARAICharacter* Char) const;
     bool IsEveryoneInCircle() const;
     bool IsPointInsideCircle(FVector Point) const;
 protected:
@@ -57,7 +57,7 @@ private:
     void ClearCircleAroundCharacter();
     void OnFindAllPossiblePoints(TSharedPtr<FEnvQueryResult> Result);
     void DistibuteAllPointsBetweenAI();
-
+    void TakeLocationOnCircle(FVector& Result, ARAICharacter* Char);
     UFUNCTION()
     void OnPlayerCharacterChangeMovementState(ERPlayerCharacterState MovementState);
 

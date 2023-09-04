@@ -21,24 +21,14 @@ void ARTeam::AddAIMember(ARAICharacter* NewMember)
     }
 }
 
-bool ARTeam::TakeLocationOnCircle(FVector& Result, ARAICharacter* Char)
+bool ARTeam::GetLocationOnCircle(FVector& Result, ARAICharacter* Char) const
 {
-    UE_LOG(LogRAITeam, Display, TEXT("GetLocationOnShape"));
     if (CharactersHasAlreadyTakenPlaceOnCircle.Contains(Char))
     {
         Result = CharactersHasAlreadyTakenPlaceOnCircle[Char];
         return true;
     }
-    if (AllFreePointsOnCircle.Num() == 0)
-    {
-        UE_LOG(LogRAITeam, Display, TEXT("GAllFreePointsOnCircle.Num is zero for %s"), *Char->GetName());
-        return false;
-    }
-    CriticalSection.Lock();
-    Result = AllFreePointsOnCircle.Pop();
-    CharactersHasAlreadyTakenPlaceOnCircle.Add(Char, Result);
-    CriticalSection.Unlock();
-    return true;
+    return false;
 }
 
 
@@ -61,16 +51,6 @@ bool ARTeam::IsEveryoneInCircle() const
 
 bool ARTeam::IsPointInsideCircle(FVector Point) const
 {
-    if (bCircleExist)
-    {
-        UE_LOG(LogRAITeam, Display, TEXT("CurrentCenterOfCircle %s, Position %s, Distance %f, CircleRadius %f"),
-            *CurrentCenterOfCircle.ToString(), *Point.ToString(),
-            FVector::Distance(CurrentCenterOfCircle, Point), CircleRadius);
-    }
-    else
-    {
-        UE_LOG(LogRAITeam, Display, TEXT("Circle doesn't exist"));
-    }
     return bCircleExist && FVector::Distance(CurrentCenterOfCircle, Point) <= CircleRadius;
 }
 
@@ -138,7 +118,25 @@ void ARTeam::DistibuteAllPointsBetweenAI()
     {
         FVector Result;
         TakeLocationOnCircle(Result, AICharacter);
+        UE_LOG(LogRAITeam, Display, TEXT("DistibuteAllPointsBetweenAI:  %s for %s"),*Result.ToString(),  *AICharacter->GetController()->GetName());
+    
     }
+}
+
+void ARTeam::TakeLocationOnCircle(FVector& Result, ARAICharacter* Char)
+{
+    if (CharactersHasAlreadyTakenPlaceOnCircle.Contains(Char))
+    {
+        return;
+    }
+    if (AllFreePointsOnCircle.Num() == 0)
+    {
+        return;
+    }
+    CriticalSection.Lock();
+    Result = AllFreePointsOnCircle.Pop();
+    CharactersHasAlreadyTakenPlaceOnCircle.Add(Char, Result);
+    CriticalSection.Unlock();
 }
 
 ARAICharacter* ARTeam::GetHoldedObjectCharacter()
@@ -169,11 +167,13 @@ void ARTeam::BuildCircleAroundCharacter()
 
 void ARTeam::ClearCircleAroundCharacter()
 {
+    CriticalSection.Lock();
     UE_LOG(LogRAITeam, Display, TEXT("ClearCircleAroundCharacter"));
     bCircleExist = false;
     AllFreePointsOnCircle.Empty();
     TotalNumberOfPointsOnCircle = 0;
     CharactersHasAlreadyTakenPlaceOnCircle.Empty();
+    CriticalSection.Unlock();
 }
 
 void ARTeam::OnPickableUpActorStateWasChanged(ERPickableItemState NewState)

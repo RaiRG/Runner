@@ -41,7 +41,7 @@ EBTNodeResult::Type URInteractWithPickableItemTask::ExecuteTask(UBehaviorTreeCom
     bool SuccessfulInteraction = true;
     if (bTake)
     {
-        UE_LOG(LogRInteractWithPickableItemTask, Display, TEXT("Hold!"))
+        UE_LOG(LogRInteractWithPickableItemTask, Display, TEXT("Hold by %s!"), *Controller->GetName())
         SuccessfulInteraction = Pawn->HoldObject(PickableItem);
     }
     else
