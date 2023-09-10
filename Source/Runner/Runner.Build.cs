@@ -16,7 +16,8 @@ public class Runner : ModuleRules
 			"InputCore",
 			"GameplayTasks",
 			"NavigationSystem",
-			"AIModule"
+			"AIModule",
+			"UMG"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
@@ -30,7 +31,9 @@ public class Runner : ModuleRules
 			"Runner/Public/AI/Decorators",
 			"Runner/Public/AI/Tasks",
 			"Runner/Public/AI/EQS",
-			"Runner/Public/AI/Services"
+			"Runner/Public/AI/Services",
+			"Runner/Public/Scenario",
+			"Runner/Public/UI"
 		});
 
 		// Uncomment if you are using Slate UI

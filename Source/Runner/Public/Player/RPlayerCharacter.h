@@ -26,14 +26,18 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop Info")
+    float DropImpulseStrength = 500.0f;
 
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
     void MoveForward(float Amount);
     void MoveRight(float Amount);
     void ChangeMovementState(ERPlayerCharacterState NewStateCanMove);
 
     void TryToPickUpOverlappedActor();
+    void DropHoldedActorInFront();
+
 
     ERPlayerCharacterState MovementState = ERPlayerCharacterState::MovementUnblocked;
 

@@ -19,7 +19,13 @@ enum class ERPlayerCharacterState : uint8
     MovementUnblocked
 };
 
+UENUM(BlueprintType)
+enum class ERMatchState : uint8
+{
+    InProgress,
+    GameOver
+};
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerCharacterChangeMovementStateSignature, ERPlayerCharacterState, NewState);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPickableUpActorChangeStateSignature, ERPickableItemState, NewState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangedSignature, ERMatchState, NewState);

@@ -8,6 +8,8 @@
 #include "RTeam.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLocationOnCircle, All, All);
+
 void URLocationOnCircle::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
     const auto Controller = OwnerComp.GetAIOwner();
@@ -36,6 +38,11 @@ void URLocationOnCircle::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
         Blackboard->ClearValue(CircleLocationKey.SelectedKeyName);
         return;
     }
-    
+
+    bool PathExist = Team->IsPointReachableByCharacter(LocationOnCircle, Pawn);
+    if (!PathExist)
+    {
+        UE_LOG(LogLocationOnCircle, Error, TEXT("Path doesn't exist, but Location still assigned"));
+    }
     Blackboard->SetValueAsVector(CircleLocationKey.SelectedKeyName, LocationOnCircle);
 }

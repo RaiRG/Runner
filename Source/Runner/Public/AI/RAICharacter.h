@@ -26,8 +26,6 @@ public:
     bool GetStandsInCircle() const { return bStandsInCircle; }
     void SetStandsInCircle(bool Val) { bStandsInCircle = Val; }
 
-
-
 protected:
     virtual void BeginPlay() override;
 

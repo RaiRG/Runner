@@ -29,6 +29,8 @@ EBTNodeResult::Type URReportStateRegardingCircleTask::ExecuteTask(UBehaviorTreeC
     }
     if (bInCircle)
     {
+        UE_LOG(LogRStopMovingToCircleTask, Display, TEXT("%s in Circle, Controller %s"), *Pawn->GetName(),
+            *Pawn->GetController()->GetName());
         Pawn->SetStandsInCircle(true);
     }
     else

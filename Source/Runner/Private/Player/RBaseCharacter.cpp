@@ -18,6 +18,7 @@ void ARBaseCharacter::DropHoldedActor(FVector Impulse)
     {
         return;
     }
+    
     MoveIgnoreActorRemove(Cast<AActor>(HoldedObject.GetObject()));
     HoldedObject->Drop(Impulse);
     HoldedObject = nullptr;

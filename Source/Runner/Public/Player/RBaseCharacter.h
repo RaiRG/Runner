@@ -27,4 +27,5 @@ protected:
 
     UPROPERTY()
     TScriptInterface<IRPickableUp> HoldedObject;
+    
 };

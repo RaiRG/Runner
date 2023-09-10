@@ -22,10 +22,12 @@ class RUNNER_API ARTeam : public AActor
 
 public:
     void AddAIMember(ARAICharacter* NewMember);
-    
+
     bool GetLocationOnCircle(FVector& Result, ARAICharacter* Char) const;
     bool IsEveryoneInCircle() const;
     bool IsPointInsideCircle(FVector Point) const;
+    bool IsPointReachableByCharacter(const FVector Point, const ARAICharacter* Character) const;
+
 protected:
     virtual void BeginPlay() override;
 
@@ -34,9 +36,6 @@ protected:
 
     UPROPERTY(EditAnywhere)
     float CircleRadius = 500;
-
-    UPROPERTY(EditAnywhere, meta =(ToolTip="Impact ot distibution of all points between characters"))
-    bool bPrioritizeCharacterWithPickableItem = true;
 
 private:
     UPROPERTY()
@@ -56,15 +55,19 @@ private:
     void BuildCircleAroundCharacter();
     void ClearCircleAroundCharacter();
     void OnFindAllPossiblePoints(TSharedPtr<FEnvQueryResult> Result);
-    void DistibuteAllPointsBetweenAI();
-    void TakeLocationOnCircle(FVector& Result, ARAICharacter* Char);
+
+    void DistributeAllPointsBetweenAI();
+    bool AssignSuitablePointOnCircleToAI(ARAICharacter* Character);
+    bool GetSuitablePointOnCircle(FVector& SuitablePointOnCircle, const ARAICharacter* Character) const;
+    void AssignPointToAI(FVector Point, ARAICharacter* Character);
+
     UFUNCTION()
     void OnPlayerCharacterChangeMovementState(ERPlayerCharacterState MovementState);
 
     UFUNCTION()
     void OnPickableUpActorStateWasChanged(ERPickableItemState NewState);
 
-    ARAICharacter* GetHoldedObjectCharacter();
+    ARAICharacter* GetHoldedObjectCharacter() const;
 
     UPROPERTY()
     ARPlayerCharacter* PlayerCharacter;

@@ -8,6 +8,7 @@
 #include "RPickableItem.h"
 #include "RPlayerCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -24,6 +25,7 @@ ARAICharacter::ARAICharacter()
         GetCharacterMovement()->bUseControllerDesiredRotation = true;
     }
 }
+
 
 void ARAICharacter::BeginPlay()
 {
