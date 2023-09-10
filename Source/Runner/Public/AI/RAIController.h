@@ -15,5 +15,8 @@ class RUNNER_API ARAIController : public AAIController
 {
     GENERATED_BODY()
 
+    ARAIController();
+    ARAIController(const FObjectInitializer& ObjectInitializer);
+    
     virtual void BeginPlay() override;
 };

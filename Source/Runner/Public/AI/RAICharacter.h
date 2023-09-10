@@ -26,6 +26,8 @@ public:
     bool GetStandsInCircle() const { return bStandsInCircle; }
     void SetStandsInCircle(bool Val) { bStandsInCircle = Val; }
 
+    virtual bool HoldObject(AActor* ActorForHolding) override;
+    virtual void DropHoldedActor(FVector Impulse = FVector()) override;
 protected:
     virtual void BeginPlay() override;
 

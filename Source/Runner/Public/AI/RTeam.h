@@ -47,7 +47,8 @@ private:
     UPROPERTY()
     TArray<FVector> AllFreePointsOnCircle;
 
-    int32 TotalNumberOfPointsOnCircle;
+   int32 TotalNumberOfPointsOnCircle;
+    int32 AssignedNumberOfPointsOnCircle;
 
     UPROPERTY()
     TMap<ARAICharacter*, FVector> CharactersHasAlreadyTakenPlaceOnCircle;
@@ -59,13 +60,11 @@ private:
     void DistributeAllPointsBetweenAI();
     bool AssignSuitablePointOnCircleToAI(ARAICharacter* Character);
     bool GetSuitablePointOnCircle(FVector& SuitablePointOnCircle, const ARAICharacter* Character) const;
+    bool GetAllSutablePointsOnCircle(TArray<FVector>& SuitablePointsOnCircle, const ARAICharacter* Character) const;)
     void AssignPointToAI(FVector Point, ARAICharacter* Character);
 
     UFUNCTION()
     void OnPlayerCharacterChangeMovementState(ERPlayerCharacterState MovementState);
-
-    UFUNCTION()
-    void OnPickableUpActorStateWasChanged(ERPickableItemState NewState);
 
     ARAICharacter* GetHoldedObjectCharacter() const;
 

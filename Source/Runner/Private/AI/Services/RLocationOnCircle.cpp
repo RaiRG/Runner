@@ -39,10 +39,5 @@ void URLocationOnCircle::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
         return;
     }
 
-    bool PathExist = Team->IsPointReachableByCharacter(LocationOnCircle, Pawn);
-    if (!PathExist)
-    {
-        UE_LOG(LogLocationOnCircle, Error, TEXT("Path doesn't exist, but Location still assigned"));
-    }
     Blackboard->SetValueAsVector(CircleLocationKey.SelectedKeyName, LocationOnCircle);
 }

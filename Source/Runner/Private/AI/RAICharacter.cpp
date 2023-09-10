@@ -8,9 +8,10 @@
 #include "RPickableItem.h"
 #include "RPlayerCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogRAICharacter, All, All);
 
 
 ARAICharacter::ARAICharacter()
@@ -26,6 +27,32 @@ ARAICharacter::ARAICharacter()
     }
 }
 
+
+bool ARAICharacter::HoldObject(AActor* ActorForHolding)
+{
+    const auto Attached = Super::HoldObject(ActorForHolding);
+    
+    if (Attached)
+    {
+        UE_LOG(LogRAICharacter, Display, TEXT("SetActorEnableCollision false"));
+
+        ActorForHolding->SetActorEnableCollision(false);
+    }
+    return Attached;
+}
+
+void ARAICharacter::DropHoldedActor(FVector Impulse)
+{
+    auto HoldedActor = Cast<AActor>(HoldedObject.GetObject());
+    UE_LOG(LogRAICharacter, Display, TEXT("DropHoldedActor"));
+
+    if (HoldedActor)
+    {
+        UE_LOG(LogRAICharacter, Display, TEXT("SetActorEnableCollision true"));
+        HoldedActor->SetActorEnableCollision(true);
+    }
+    Super::DropHoldedActor(Impulse);
+}
 
 void ARAICharacter::BeginPlay()
 {

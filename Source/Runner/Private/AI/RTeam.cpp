@@ -15,6 +15,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogRAITeam, All, All);
 
 DEFINE_LOG_CATEGORY_STATIC(LogRAITeamCircle, All, All);
 
+DEFINE_LOG_CATEGORY_STATIC(LogRLocationDistribution, All, All);
+
 void ARTeam::AddAIMember(ARAICharacter* NewMember)
 {
     if (!NewMember->GetTeam() && NewMember)
@@ -56,11 +58,11 @@ bool ARTeam::IsEveryoneInCircle() const
 
         }
     }
-    UE_LOG(LogRAITeamCircle, Display, TEXT("NumberOfCharactersInCircle = %i, TotalNumberOfPointsOnCircle = %i, AllMembers.Num() %i"), NumberOfCharactersInCircle,
-        TotalNumberOfPointsOnCircle, AllMembers.Num());
-    return TotalNumberOfPointsOnCircle <= AllMembers.Num()
-               ? NumberOfCharactersInCircle == TotalNumberOfPointsOnCircle
-               : NumberOfCharactersInCircle == AllMembers.Num();
+    UE_LOG(LogRAITeamCircle, Display,
+        TEXT("NumberOfCharactersInCircle = %i, TotalNumberOfPointsOnCircle = %i, AllMembers.Num() %i, AssignedNum =%i"),
+        NumberOfCharactersInCircle,
+        TotalNumberOfPointsOnCircle, AllMembers.Num(), AssignedNumberOfPointsOnCircle);
+    return NumberOfCharactersInCircle == AssignedNumberOfPointsOnCircle;
 }
 
 bool ARTeam::IsPointInsideCircle(FVector Point) const
@@ -89,13 +91,6 @@ void ARTeam::BeginPlay()
         PlayerCharacter->PlayerCharacterChangeMovementState.AddDynamic(
             this, &ARTeam::OnPlayerCharacterChangeMovementState);
     }
-
-    PickableItem = Cast<ARPickableItem>(
-        UGameplayStatics::GetActorOfClass(GetWorld(), ARPickableItem::StaticClass()));
-    if (PickableItem)
-    {
-        PickableItem->PickableUpActorChangeState.AddDynamic(this, &ARTeam::OnPickableUpActorStateWasChanged);
-    }
 }
 
 void ARTeam::OnPlayerCharacterChangeMovementState(ERPlayerCharacterState MovementState)
@@ -111,18 +106,10 @@ void ARTeam::OnPlayerCharacterChangeMovementState(ERPlayerCharacterState Movemen
 
 void ARTeam::OnFindAllPossiblePoints(TSharedPtr<FEnvQueryResult> Result)
 {
+    ClearCircleAroundCharacter();
     bCircleExist = true;
-    AllFreePointsOnCircle.Empty();
     Result->GetAllAsLocations(AllFreePointsOnCircle);
     TotalNumberOfPointsOnCircle = AllFreePointsOnCircle.Num();
-    CharactersHasAlreadyTakenPlaceOnCircle.Empty();
-    int32 Num = 0;
-    for (auto Item : Result->Items)
-    {
-        UE_LOG(LogRAITeamCircle, Display, TEXT("Index %i Item Score = %f"), Num, Item.Score);
-        Num++;
-
-    }
     DistributeAllPointsBetweenAI();
     UE_LOG(LogRAITeam, Display, TEXT("TotalNumberOfPointsOnCircle = %i"), TotalNumberOfPointsOnCircle);
     CriticalSection.Unlock();
@@ -130,6 +117,7 @@ void ARTeam::OnFindAllPossiblePoints(TSharedPtr<FEnvQueryResult> Result)
 
 void ARTeam::DistributeAllPointsBetweenAI()
 {
+    UE_LOG(LogRLocationDistribution, Display, TEXT("DistributeAllPointsBetweenAI start!"));
     const auto GrabbingCharacter = GetHoldedObjectCharacter();
     auto AssignedNumber = 0;
     for (const auto AICharacter : AllMembers)
@@ -175,6 +163,22 @@ bool ARTeam::GetSuitablePointOnCircle(FVector& SuitablePointOnCircle, const ARAI
     return false;
 }
 
+bool ARTeam::GetAllSutablePointsOnCircle(TArray<FVector>& SuitablePointsOnCircle, const ARAICharacter* Character) const
+{
+    SuitablePointsOnCircle.Empty();
+    if (Character)
+    {
+        for (const FVector Point : AllFreePointsOnCircle)
+        {
+            if (IsPointReachableByCharacter(Point, Character))
+            {
+               SuitablePointsOnCircle.Add(Point);
+            }
+        }
+    }
+    return false;
+}
+
 bool ARTeam::IsPointReachableByCharacter(const FVector Point, const ARAICharacter* Character) const
 {
     const FVector BotLocation = Character->GetActorLocation();
@@ -197,19 +201,28 @@ void ARTeam::AssignPointToAI(FVector Point, ARAICharacter* Character)
     }
 
     CriticalSection.Lock();
-    AllFreePointsOnCircle.Remove(Point);
     CharactersHasAlreadyTakenPlaceOnCircle.Add(Character, Point);
+    AllFreePointsOnCircle.Remove(Point);
     CriticalSection.Unlock();
 }
 
 bool ARTeam::AssignSuitablePointOnCircleToAI(ARAICharacter* Character)
 {
+    if (!Character) return false;
+
     FVector Result;
     const auto Found = GetSuitablePointOnCircle(Result, Character);
 
     if (Found)
     {
+        UE_LOG(LogRLocationDistribution, Display, TEXT("AssignSuitablePointOnCircleTo %s!"), *Character->GetController()->GetName());
         AssignPointToAI(Result, Character);
+        AssignedNumberOfPointsOnCircle++;
+    }
+    else
+    {
+        UE_LOG(LogRLocationDistribution, Display, TEXT("Can't AssignSuitablePointOnCircleTo %s!"), *Character->GetName());
+
     }
     return Found;
 }
@@ -227,7 +240,6 @@ ARAICharacter* ARTeam::GetHoldedObjectCharacter() const
 
 void ARTeam::BuildCircleAroundCharacter()
 {
-    ClearCircleAroundCharacter();
     UE_LOG(LogRAITeam, Display, TEXT("OnPlayerCharacterChangeMovementState"));
     CriticalSection.Lock();
     if (PlayerCharacter)
@@ -249,14 +261,7 @@ void ARTeam::ClearCircleAroundCharacter()
     bCircleExist = false;
     AllFreePointsOnCircle.Empty();
     TotalNumberOfPointsOnCircle = 0;
+    AssignedNumberOfPointsOnCircle = 0;
     CharactersHasAlreadyTakenPlaceOnCircle.Empty();
     CriticalSection.Unlock();
-}
-
-void ARTeam::OnPickableUpActorStateWasChanged(ERPickableItemState NewState)
-{
-    if (NewState == ERPickableItemState::OutsideCircle)
-    {
-       // ClearCircleAroundCharacter();
-    }
 }
