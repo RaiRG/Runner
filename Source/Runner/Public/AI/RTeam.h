@@ -60,7 +60,6 @@ private:
     void DistributeAllPointsBetweenAI();
     bool AssignSuitablePointOnCircleToAI(ARAICharacter* Character);
     bool GetSuitablePointOnCircle(FVector& SuitablePointOnCircle, const ARAICharacter* Character) const;
-    bool GetAllSutablePointsOnCircle(TArray<FVector>& SuitablePointsOnCircle, const ARAICharacter* Character) const;)
     void AssignPointToAI(FVector Point, ARAICharacter* Character);
 
     UFUNCTION()

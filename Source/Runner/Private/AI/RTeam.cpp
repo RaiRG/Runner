@@ -163,22 +163,6 @@ bool ARTeam::GetSuitablePointOnCircle(FVector& SuitablePointOnCircle, const ARAI
     return false;
 }
 
-bool ARTeam::GetAllSutablePointsOnCircle(TArray<FVector>& SuitablePointsOnCircle, const ARAICharacter* Character) const
-{
-    SuitablePointsOnCircle.Empty();
-    if (Character)
-    {
-        for (const FVector Point : AllFreePointsOnCircle)
-        {
-            if (IsPointReachableByCharacter(Point, Character))
-            {
-               SuitablePointsOnCircle.Add(Point);
-            }
-        }
-    }
-    return false;
-}
-
 bool ARTeam::IsPointReachableByCharacter(const FVector Point, const ARAICharacter* Character) const
 {
     const FVector BotLocation = Character->GetActorLocation();
